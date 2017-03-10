@@ -1,5 +1,11 @@
 var proxyRequest = require('request');
 var fs = require("fs");
+var redisConfig = require("../redis.json");
+var redis = require('redis');
+var client = redis.createClient(redisConfig["redisPort"], redisConfig["redisHost"]);
+var co = require('co');
+var wrapper = require('co-redis');
+var redisClient = wrapper(client);
 
 exports.autoroute = {
     'get' : {
@@ -45,6 +51,17 @@ function checkLoginHandler(req, res) {
         uName :'张义',
         isAdmin : checkIsAdmin('张义')
     };
+
+    co(function* () {
+        var result = yield redisClient.set('testxgq', 33);
+        console.log(result);
+        console.log(yield redisClient.get('testxgq'));
+
+        redisClient.quit();
+    }).catch(function(e) {
+        console.log(e);
+    });
+
     res.end(JSON.stringify(o));
     return;
 

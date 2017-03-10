@@ -10,6 +10,9 @@
     "ejs": "*",
     "less-middleware": "*",
     "mysql":"latest",
-    "mysql-queues":"latest"
+    "mysql-queues":"latest",
+    "redis":"latest",
+    "co":"latest",
+    "co-redis":"latest"
   }
 }
