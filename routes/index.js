@@ -39,29 +39,38 @@ function checkLoginHandler(req, res) {
         return ;
     }
 
-    var url = "http://oa.http://oa.bojoy.net/general/reservation/check_iden.php?uid="+pt+"&pwd=" + pwd + "&t=" + new Date().getTime();
+    o = {code:0, msg:"登录成功"};
+    req.session.user = {
+        uId : 1,
+        uName :'张义',
+        isAdmin : checkIsAdmin('张义')
+    };
+    res.end(JSON.stringify(o));
+    return;
 
-    proxyRequest.get(url, function(error, proxyResponse, proxyBody) {
-        if (proxyResponse.statusCode == "200") {
-            var proxyResultArr = proxyBody.split("@");
-            if (proxyResultArr.length == 2) {
-                o = {code:0, msg:"登录成功"};
-
-                req.session.user = {
-                    uId : proxyResultArr[0],
-                    uName :proxyResultArr[1],
-                    isAdmin : checkIsAdmin(proxyResultArr[1])
-                };
-
-            }  else {
-                o = {code:1, msg:proxyBody.toString()};
-            }
-
-            res.end(JSON.stringify(o));
-
-            return ;
-        }
-    });
+    //var url = "http://oa.http://oa.bojoy.net/general/reservation/check_iden.php?uid="+pt+"&pwd=" + pwd + "&t=" + new Date().getTime();
+    //
+    //proxyRequest.get(url, function(error, proxyResponse, proxyBody) {
+    //    if (proxyResponse.statusCode == "200") {
+    //        var proxyResultArr = proxyBody.split("@");
+    //        if (proxyResultArr.length == 2) {
+    //            o = {code:0, msg:"登录成功"};
+    //
+    //            req.session.user = {
+    //                uId : proxyResultArr[0],
+    //                uName :proxyResultArr[1],
+    //                isAdmin : checkIsAdmin(proxyResultArr[1])
+    //            };
+    //
+    //        }  else {
+    //            o = {code:1, msg:proxyBody.toString()};
+    //        }
+    //
+    //        res.end(JSON.stringify(o));
+    //
+    //        return ;
+    //    }
+    //});
 }
 
 function onLogoutHandler(req, res) {
